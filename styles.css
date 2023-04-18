@@ -1,0 +1,33 @@
+body {
+  font-family: 'Nunito', sans-serif;
+  text-align: center;
+}
+
+main {
+  width: 90%;
+  margin: auto;
+}
+
+.add-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  align-content: center;
+}
+
+.add {
+  width: 10rem;
+  height: 10rem;
+  border-radius: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
+}
+
+.income {
+  background-color: #51ffc8;
+}
+
+.expenses {
+  background-color: #ff9442;
+}
