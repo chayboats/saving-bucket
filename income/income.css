@@ -1,0 +1,8 @@
+.form {
+  display: flex;
+  background-color: var(--color1);
+  padding: .5rem;
+  border-radius: .5rem;
+  width: 20rem;
+  margin: auto;
+}

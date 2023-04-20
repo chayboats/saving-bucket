@@ -1,0 +1,128 @@
+body {
+  color: var(--color4);
+  font-family: 'Nunito', sans-serif;
+  background: linear-gradient(var(--color3), var(--color1), var(--color2), var(--color4));
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+
+section {
+  margin-left: 2rem;
+}
+
+h1 {
+  font-size: 2.25rem;
+  margin: 0;
+  padding: 0;
+  letter-spacing: 5px;
+}
+
+h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 5rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+.card-form {
+  background-color: var(--color4);
+  border-radius: .5rem;
+  color: var(--color5);
+  height: 9rem;
+  width: 25rem;
+  padding: 1rem;
+  margin-top: 3rem;
+  box-shadow: 5px 5px 44px 1px rgb(225, 215, 228);
+}
+
+h3 {
+  margin: 0;
+  padding: 0;
+  font-size: 1.5rem;
+}
+
+input, option, select {
+  font-family: 'Nunito', sans-serif;
+}
+
+.label {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--color1);
+  padding: .5rem;
+  border-radius: 3px;
+  margin: .5rem 0;
+  align-items: center;
+  font-weight: bold;
+}
+
+.type {
+  background-color: var(--color1)
+}
+
+.amount {
+  background-color: var(--color2);
+}
+
+.amount div {
+  background-color: var(--color4);
+  padding-left: .5rem;
+}
+.amount-input {
+  border: none;
+  text-align: right;
+}
+
+select {
+  width: 15rem;
+}
+
+select, .amount div {
+  border: 1px solid black;
+  padding: 2px;
+  border-radius: 3px;
+}
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: .5rem;
+  margin-top: 2rem;
+  border-radius: .5rem;
+  width: 25rem;
+  height: 0;
+}
+
+.card {
+  text-align: left;
+  background-color: var(--color4);
+  width: 25rem;
+  padding: .5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: .5rem;
+  color: var(--color5);
+  box-shadow: 5px 3px 12px .5px rgb(206, 200, 208);
+}
+
+.card-type {
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.card-amount {
+  letter-spacing: .5px;
+}
+
+.fa-burger {
+  font-size: 1.6rem;
+  color: var(--color3)
+}
+
+.left {
+  display: flex;
+  width: 5.25rem;
+  justify-content: space-between;
+  align-items: center;
+}
