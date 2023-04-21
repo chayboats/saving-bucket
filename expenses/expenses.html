@@ -37,15 +37,15 @@
       <h1>YOUR EXPENSES</h1>
       <h2>$1,468.78</h2>
       
-      <form class="card-form">
+      <form id="card-form">
         <h3>Add Expense</h3>
         
         <label class="label type">Type
-          <select>
-            <option value="0">Select expense type...</option>
+          <select required id="type-select">
+            <option value="">Select expense type...</option>
             <option value="1">Food</option>
-            <option value="2">Bills/Fees</option>
-            <option value="3">Home Essentials</option>
+            <option value="3">Bills/Fees</option>
+            <option value="4">Home Essentials</option>
             <option value="4">Medical</option>
             <option value="5">Transportation</option>
             <option value="6">Non-Essentials</option>
@@ -56,44 +56,30 @@
         <label class="label amount">Amount
           <div>
             <span>$</span>
-            <input
-              class="amount-input"
-              type="number"
-            />
+            <input required id="amount-input" class="amount-input" type="number"/>
           </div>
         </label>
       </form>
 
-      <div class="cards">
+      <div id="cards">
         <div class="card">
-
           <div class="left">
-            <i class="fa-solid fa-burger"></i>
-            
-            <div class="text">
-              <div class="card-type">Food</div>
-              
-            </div>
-          </div>
-
-          <div class="card-amount">$5.99</div>
-        </div>
-        <div class="card">
-
-          <div class="left">
-            <i class="fa-solid fa-burger"></i>
-            
-            <div class="text">
-              <div class="card-type">Food</div>
-              
-            </div>
+            <i class="icon fa-solid fa-burger"></i>
+            <span class="card-type">Food</span>  
           </div>
 
           <div class="card-amount">$5.99</div>
         </div>
 
+        <div class="card">
+          <div class="left">
+            <i class="icon fa-solid fa-burger"></i>
+            <span class="card-type">Food</span>  
+          </div>
+
+          <div class="card-amount">$5.99</div>
+        </div>
       </div>
     </section>
-    
-  </body>
+    <script src="../main.js"></script>  </body>
 </html>
