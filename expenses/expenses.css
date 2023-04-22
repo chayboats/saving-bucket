@@ -129,12 +129,12 @@ input, option, select {
 
 .left {
   display: flex;
-  width: 5.25rem;
   justify-content: space-between;
   align-items: center;
 }
 
 .icon {
   font-size: 1.6rem;
-  color: var(--color3)
+  color: var(--color3);
+  padding-right: .5rem;
 }
