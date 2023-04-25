@@ -1,12 +1,16 @@
 const cardForm = document.getElementById('card-form');
 const cards = document.getElementById('cards');
 const amountInput = document.getElementById('amount-input');
+const total = document.getElementById('total')
 const typeSelect = document.getElementById('type-select');
 const typeOptions = typeSelect.children;
 const iconOptions = ['fa-burger', 'fa-file-invoice-dollar', 'fa-house', 'fa-suitcase-medical', 'fa-bus', 'fa-film', 'fa-layer-group'];
-const localCards = localStorage.getItem('localCards') ? JSON.parse(localStorage.getItem('localCards')) : [];
+let localCards = localStorage.getItem('localCards') ? JSON.parse(localStorage.getItem('localCards')) : [];
+let trashCans = [];
 
-function updateLocalStorage() {
+
+function updateLocalStorage(callback) {
+  callback()
   localStorage.setItem('localCards', JSON.stringify(localCards));
 }
 
@@ -27,9 +31,27 @@ function createElement(elementType, options = {}, parent) {
   return element;
 }
 
+function deleteFromLocalStorage(element, elementArray, localArray) {
+  const removeIndex = elementArray.indexOf(element);
+    
+  elementArray.splice(removeIndex, 1);
+  updateLocalStorage(() => localArray.splice(removeIndex, 1));
+  updateTotal(localCards)
+}
+
+function createDeleteButton(parent) {
+  const trashCan = createElement('i', { classList: ['fa-solid', 'fa-trash'] }, parent);
+  trashCans.push(trashCan);
+
+  trashCan.addEventListener('click', () => {
+    parent.remove(trashCan);
+    deleteFromLocalStorage(trashCan, trashCans, localCards)
+  });
+}
+
 function createCard(optionNumber, amount) {
-  const card = createElement('div', { classList: ['single-card-container'] }, cards);
-  const cardInfo = createElement('div', { classList: ['card'] }, card);
+  const card = createElement('div', { classList: ['card'] }, cards);
+  const cardInfo = createElement('div', { classList: ['card-info'] }, card);
   const left = createElement('div', { classList: ['left'] }, cardInfo);
 
   const optionSelected = optionNumber;
@@ -40,12 +62,23 @@ function createCard(optionNumber, amount) {
 
   const cardAmountOptions = { classList: ['card-amount'], textContent: formatCurrency(amount) };
   createElement('div', cardAmountOptions, cardInfo);
-  createElement('i', { classList: ['fa-solid', 'fa-trash'] }, card);
+  createDeleteButton(card);
 }
 
 function formatCurrency(currency) {
   if (currency === undefined || currency === '') return '';
   return parseFloat(currency).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+}
+
+function updateTotal() {
+  let totalAmount = 0
+  
+  if(localCards.length > 0) {
+    for(let x = 0; x < localCards.length; x++) {
+      totalAmount += Number(localCards[x].amount)
+    }
+  }
+  return total.textContent = `$${totalAmount}`
 }
 
 function handleSubmit() {
@@ -54,8 +87,8 @@ function handleSubmit() {
     const inputData = { optionNumber: typeSelect.value, amount: amountInput.value };
     createCard(inputData.optionNumber, inputData.amount);
 
-    localCards.push(inputData);
-    updateLocalStorage();
+    updateLocalStorage(() => localCards.push(inputData));
+    updateTotal()
   });
 }
 
@@ -63,6 +96,8 @@ function restoreData() {
   localCards.forEach((object) => {
     createCard(object.optionNumber, object.amount);
   });
+  updateTotal(localCards)
+
 }
 
 restoreData();
