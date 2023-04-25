@@ -10,7 +10,6 @@
 body {
   font-family: 'Nunito', sans-serif;
   background-color: var(--color3);
-  overflow: hidden;
   margin: 0;
 }
 
@@ -37,3 +36,4 @@ li a {
 li a:visited {
   color: var(--color4);
 }
+

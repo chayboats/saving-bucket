@@ -1,11 +1,14 @@
 const cardForm = document.getElementById('card-form');
-const cardContainer = document.getElementById('cards');
+const cards = document.getElementById('cards');
 const amountInput = document.getElementById('amount-input');
 const typeSelect = document.getElementById('type-select');
-
 const typeOptions = typeSelect.children;
-
 const iconOptions = ['fa-burger', 'fa-file-invoice-dollar', 'fa-house', 'fa-suitcase-medical', 'fa-bus', 'fa-film', 'fa-layer-group'];
+const localCards = localStorage.getItem('localCards') ? JSON.parse(localStorage.getItem('localCards')) : [];
+
+function updateLocalStorage() {
+  localStorage.setItem('localCards', JSON.stringify(localCards));
+}
 
 function createElement(elementType, options = {}, parent) {
   const element = document.createElement(elementType);
@@ -24,25 +27,20 @@ function createElement(elementType, options = {}, parent) {
   return element;
 }
 
-function createIcon(array, index, parent) {
-  return createElement('i', { classList: ['icon', 'fa-solid', array[index - 1]] }, parent);
-}
+function createCard(optionNumber, amount) {
+  const card = createElement('div', { classList: ['single-card-container'] }, cards);
+  const cardInfo = createElement('div', { classList: ['card'] }, card);
+  const left = createElement('div', { classList: ['left'] }, cardInfo);
 
-function handleSubmit() {
-  cardForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const card = createElement('div', { classList: ['card'] }, cardContainer);
-    const left = createElement('div', { classList: ['left'] }, card);
+  const optionSelected = optionNumber;
+  createElement('i', { classList: ['icon', 'fa-solid', iconOptions[optionSelected - 1]] }, left);
 
-    const optionNumber = typeSelect.value;
-    const cardOptions = { classList: ['card-type'], textContent: typeOptions[optionNumber].textContent };
-    createElement('span', cardOptions, left);
+  const cardOptions = { classList: ['card-type'], textContent: typeOptions[optionSelected].textContent };
+  createElement('span', cardOptions, left);
 
-    createElement('i', { classList: ['icon', 'fa-solid', iconOptions[optionNumber - 1]] }, left);
-
-    const cardAmountOptions = { classList: ['card-amount'], textContent: formatCurrency(amountInput.value) };
-    createElement('div', cardAmountOptions, card);
-  });
+  const cardAmountOptions = { classList: ['card-amount'], textContent: formatCurrency(amount) };
+  createElement('div', cardAmountOptions, cardInfo);
+  createElement('i', { classList: ['fa-solid', 'fa-trash'] }, card);
 }
 
 function formatCurrency(currency) {
@@ -50,4 +48,22 @@ function formatCurrency(currency) {
   return parseFloat(currency).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 }
 
+function handleSubmit() {
+  cardForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const inputData = { optionNumber: typeSelect.value, amount: amountInput.value };
+    createCard(inputData.optionNumber, inputData.amount);
+
+    localCards.push(inputData);
+    updateLocalStorage();
+  });
+}
+
+function restoreData() {
+  localCards.forEach((object) => {
+    createCard(object.optionNumber, object.amount);
+  });
+}
+
+restoreData();
 handleSubmit();

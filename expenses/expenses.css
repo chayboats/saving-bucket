@@ -63,7 +63,7 @@ select {
 }
 
 select, .amount div {
-  border: 1px solid black;
+  border: 1px solid var(--color5);
   padding: 2px;
   border-radius: 3px;
   display: flex;
@@ -103,6 +103,39 @@ input, option, select {
   border-radius: .5rem;
   width: 25rem;
   height: 0;
+}
+
+.single-card-container {
+  display: flex;
+  align-items: center;
+}
+
+.single-card-container:hover {
+  cursor: pointer;
+  border: 3px solid var(--color5);
+  transition: .08s ease-out;
+  background-color: var(--color4);
+  border-radius: .5rem;
+  padding: 0 5px;
+}
+
+.single-card-container:hover .fa-trash{
+  font-size: 1.6rem;
+  color: var(--color5);
+  padding-right: .5rem;
+  transition: .08s;
+  clip: unset;
+  position: relative;
+}
+
+.single-card-container:hover .card{
+  box-shadow: none;
+}
+
+.fa-trash {
+  position: absolute;
+  clip: rect(1px, 1px, 1px, 1px);
+  color: transparent
 }
 
 .card {
