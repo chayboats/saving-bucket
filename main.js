@@ -1,7 +1,9 @@
 const cardForm = document.getElementById('card-form');
 const cards = document.getElementById('cards');
 const amountInput = document.getElementById('amount-input');
-const total = document.getElementById('total')
+const total = document.getElementById('total');
+const clearAll = document.getElementById('clear-all');
+
 const typeSelect = document.getElementById('type-select');
 const typeOptions = typeSelect.children;
 const iconOptions = ['fa-burger', 'fa-file-invoice-dollar', 'fa-house', 'fa-suitcase-medical', 'fa-bus', 'fa-film', 'fa-layer-group'];
@@ -9,12 +11,9 @@ let localCards = localStorage.getItem('localCards') ? JSON.parse(localStorage.ge
 let trashCans = [];
 
 
-function updateLocalStorage(callback) {
-  callback()
-  localStorage.setItem('localCards', JSON.stringify(localCards));
-}
 
-function createElement(elementType, options = {}, parent) {
+
+function createAndAppendElement(elementType, options = {}, parent) {
   const element = document.createElement(elementType);
   const optionKeys = Object.keys(options);
 
@@ -31,7 +30,7 @@ function createElement(elementType, options = {}, parent) {
   return element;
 }
 
-function deleteFromLocalStorage(element, elementArray, localArray) {
+function removeElementAndUpdateLocalStorage(element, elementArray, localArray) {
   const removeIndex = elementArray.indexOf(element);
     
   elementArray.splice(removeIndex, 1);
@@ -40,28 +39,28 @@ function deleteFromLocalStorage(element, elementArray, localArray) {
 }
 
 function createDeleteButton(parent) {
-  const trashCan = createElement('i', { classList: ['fa-solid', 'fa-trash'] }, parent);
+  const trashCan = createAndAppendElement('i', { classList: ['fa-solid', 'fa-trash'] }, parent);
   trashCans.push(trashCan);
 
   trashCan.addEventListener('click', () => {
     parent.remove(trashCan);
-    deleteFromLocalStorage(trashCan, trashCans, localCards)
+    removeElementAndUpdateLocalStorage(trashCan, trashCans, localCards)
   });
 }
 
 function createCard(optionNumber, amount) {
-  const card = createElement('div', { classList: ['card'] }, cards);
-  const cardInfo = createElement('div', { classList: ['card-info'] }, card);
-  const left = createElement('div', { classList: ['left'] }, cardInfo);
+  const card = createAndAppendElement('div', { classList: ['card'] }, cards);
+  const cardInfo = createAndAppendElement('div', { classList: ['card-info'] }, card);
+  const left = createAndAppendElement('div', { classList: ['left'] }, cardInfo);
 
   const optionSelected = optionNumber;
-  createElement('i', { classList: ['icon', 'fa-solid', iconOptions[optionSelected - 1]] }, left);
+  createAndAppendElement('i', { classList: ['icon', 'fa-solid', iconOptions[optionSelected - 1]] }, left);
 
   const cardOptions = { classList: ['card-type'], textContent: typeOptions[optionSelected].textContent };
-  createElement('span', cardOptions, left);
+  createAndAppendElement('span', cardOptions, left);
 
   const cardAmountOptions = { classList: ['card-amount'], textContent: formatCurrency(amount) };
-  createElement('div', cardAmountOptions, cardInfo);
+  createAndAppendElement('div', cardAmountOptions, cardInfo);
   createDeleteButton(card);
 }
 
@@ -78,17 +77,58 @@ function updateTotal() {
       totalAmount += Number(localCards[x].amount)
     }
   }
-  return total.textContent = `$${totalAmount}`
+  return total.textContent = formatCurrency(totalAmount)
 }
+
+function resetInput(array) {
+  array.forEach((element) => {
+    element.value = 0
+  })
+}
+
+
+
+
+
+
+
+
+
+
+function updateLocalStorage(callback) {
+  callback()
+  localStorage.setItem('localCards', JSON.stringify(localCards));
+}
+
+function clearAllButton() {
+
+  clearAll.addEventListener('click', () => {
+    updateLocalStorage(() => localCards = [])
+    console.log(localCards)
+  })
+
+  determineClassForClearAllButton('active-button', 'inactive-button')
+}
+
+function determineClassForClearAllButton(class1, class2) {
+  if(localCards.length > 0) {
+    clearAll.className = class1;
+    return
+  }
+  clearAll.className = class2;
+}
+
 
 function handleSubmit() {
   cardForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const inputData = { optionNumber: typeSelect.value, amount: amountInput.value };
     createCard(inputData.optionNumber, inputData.amount);
-
+    
     updateLocalStorage(() => localCards.push(inputData));
     updateTotal()
+    resetInput([typeSelect, amountInput]);  
+    typeSelect.focus()
   });
 }
 
@@ -96,8 +136,8 @@ function restoreData() {
   localCards.forEach((object) => {
     createCard(object.optionNumber, object.amount);
   });
+  clearAllButton()
   updateTotal(localCards)
-
 }
 
 restoreData();
