@@ -72,6 +72,7 @@
           <select
             required
             id="type-select"
+            autofocus
           >
             <option value="">Select expense type...</option>
             <option value="1">Food</option>
@@ -94,11 +95,14 @@
               step=".01"
               class="amount-input"
               type="number"
+              min=".01"
+              max="10000000000"
             />
           </div>
         </label>
       </form>
 
+      <div class="button-container"><button id="clear-all">Clear All</button></div>
       <div id="cards"></div>
     </section>
     <script src="../main.js"></script>

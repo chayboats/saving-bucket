@@ -95,11 +95,46 @@ input, option, select {
 
 }
 
+.button-container {
+  display: flex;
+  justify-content: center;
+  width: 432px;
+}
+
+.inactive-button {
+ margin: 1rem;
+ background-color: rgba(171, 2, 176, 0.084);
+ color: rgba(255, 255, 255, 0.268);
+ border: none;
+ font-size: 1.1rem;
+ border-radius: 5px;
+ font-family: 'Nunito', sans-serif;
+ padding: .5rem 3rem;
+}
+
+.active-button {
+  margin: 1rem;
+  background-color: var(--color1);
+  color: var(--color4);
+  border: none;
+  font-size: 1.1rem;
+  border-radius: 5px;
+  font-family: 'Nunito', sans-serif;
+  padding: .5rem 3rem;
+} 
+
+.active-button:hover {
+  cursor: pointer;
+  background-color: var(--color5);
+  transition: .15s ease-in-out;
+  box-shadow: 0 0 10px 3px rgb(247, 239, 250);
+
+}
+
 #cards {
   display: grid;
   grid-template-columns: 1fr;
   gap: .5rem;
-  margin-top: 2rem;
   border-radius: .5rem;
   width: 25rem;
   height: 0;
