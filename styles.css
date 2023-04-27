@@ -16,10 +16,17 @@ body {
 a {
   text-decoration: none;
   color: var(--color5);
+  transition: .1s ease-in-out;
+
 }
 
 a:visited {
   color: var(--color5);
+}
+
+a:hover {
+  cursor: pointer;
+  font-weight: bold;
 }
 
 ul {

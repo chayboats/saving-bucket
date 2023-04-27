@@ -101,7 +101,7 @@ input, option, select {
   width: 432px;
 }
 
-.inactive-button {
+.inactive {
  margin: 1rem;
  background-color: rgba(171, 2, 176, 0.084);
  color: rgba(255, 255, 255, 0.268);
@@ -112,7 +112,7 @@ input, option, select {
  padding: .5rem 3rem;
 }
 
-.active-button {
+.active {
   margin: 1rem;
   background-color: var(--color1);
   color: var(--color4);
@@ -123,7 +123,7 @@ input, option, select {
   padding: .5rem 3rem;
 } 
 
-.active-button:hover {
+.active:hover {
   cursor: pointer;
   background-color: var(--color5);
   transition: .15s ease-in-out;
