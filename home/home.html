@@ -17,9 +17,9 @@
     />
 
     <link
-    rel="stylesheet"
-    type="text/css"
-    href="home.css"
+      rel="stylesheet"
+      type="text/css"
+      href="home.css"
     />
 
     <link
@@ -40,39 +40,38 @@
 
   <body>
     <section class="hero">
-      <nav>
-        <ul>
-          <li> 
-            <a href="home.html">Home</a>
-          </li>
-          <li>
-            <a id="expense-link" href="../expenses/expenses.html">Expenses</a>
-          </li>
-          <li>
-            <a id="income-link" href="../expenses/expenses.html">Income</a>
-          </li>
-        </ul>
-      </nav>
+      <nav id="nav"></nav>
 
       <h1 class="title">BUILD YOUR SAVINGS BUCKET</h1>
       <p>Tell us your desired savings goal and deadline, and leave the rest to us.</p>
-      
+ 
       <form class="goal-form">
         <div class="input-container">
           <span>$</span>
-          <input class="goal-input" type="number" />
+          <input
+            class="goal-input"
+            type="number"
+          />
         </div>
         <div class="input-container days-input">
-          <input class="goal-input" type="number" />
+          <input
+            class="goal-input"
+            type="number"
+          />
           <span>Days</span>
         </div>
-        <button class="set-goal" type="submit">Set Goal</button>
+        <button
+          class="set-goal"
+          type="submit"
+        >
+          Set Goal
+        </button>
       </form>
     </section>
 
     <section class="progress">
       <h2>Your Bucket</h2>
-      
+
       <div class="progress-bar-container">
         <div class="progress-bar">
           <div class="bar"></div>
@@ -102,8 +101,7 @@
         <div class="top"></div>
         <div class="bottom">$4673.65</div>
       </div>
-      
     </section>
-    <script src="../main.js"></script>
+    <script src="home.js"></script>
   </body>
 </html>
