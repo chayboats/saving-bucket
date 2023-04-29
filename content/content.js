@@ -1,15 +1,3 @@
-// Differences
-// Text - names, headers, options
-// Local storage key
-
-// const title = document.getElementById('expenses-or-income');
-// function determineTitle(link, titleTextContent) {
-//   link.addEventListener('click', (e) => {
-//     e.preventDefault();
-//     title.textContent = titleTextContent;
-//   });
-// }
-
 let incomeLink;
 let expenseLink;
 
@@ -22,27 +10,35 @@ fetch('../nav.html')
 
     expenseLink.addEventListener('click', () => setPage('expense'));
     incomeLink.addEventListener('click', () => setPage('income'));
-  });
+});
 
 function setPage(pageKey) {
   localStorage.setItem('page', pageKey);
 }
-
 
 const cardForm = document.getElementById('card-form');
 const cards = document.getElementById('cards');
 const amountInput = document.getElementById('amount-input');
 const total = document.getElementById('total');
 const clearAll = document.getElementById('clear-all');
+const title = document.getElementById('title');
+const subheading = document.getElementsByName('h3');
 const typeSelect = document.getElementById('type-select');
 const typeOptions = typeSelect.children;
+let iconOptions;
 
-let localCards = [];
-let expenseData;
-let incomeData;
+const page = localStorage.getItem('page');
 
-const iconOptions = ['fa-burger', 'fa-file-invoice-dollar', 'fa-house', 'fa-suitcase-medical', 'fa-bus', 'fa-film', 'fa-layer-group'];
-let localExpenseCards = localStorage.getItem('local-expense-cards') ? JSON.parse(localStorage.getItem('local-expense-cards')) : [];
+let key;
+
+if (page == 'expense') {
+  key = 'local-expense-cards';
+} else {
+  key = 'local-income-cards';
+}
+
+let localCards = localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : [];
+
 let trashCans = [];
 
 function createAndAppendElement(elementType, options = {}, parent) {
@@ -61,32 +57,38 @@ function createAndAppendElement(elementType, options = {}, parent) {
   return element;
 }
 
-function removeElementAndUpdateLocalStorage(localCardsString, element, elements, localCards) {
+function removeElementAndUpdateLocalStorage(element, elements) {
   const removeIndex = elements.indexOf(element);
 
   elements.splice(removeIndex, 1);
-  updateLocalStorage(localCardsString, localCards, () => localCards.splice(removeIndex, 1));
-  updateTotal(localCards);
+  localCards.splice(removeIndex, 1)
+  updateLocalStorage();
+  updateTotal();
 }
 
-function createDeleteButton(localCardsString, localCards, parent) {
+function createDeleteButton(parent) {
   const trashCan = createAndAppendElement('i', { classList: ['fa-solid', 'fa-trash'] }, parent);
   trashCans.push(trashCan);
 
   trashCan.addEventListener('click', () => {
     parent.remove(trashCan);
-    removeElementAndUpdateLocalStorage(localCardsString, trashCan, trashCans, localCards);
-    console.log(localCards.length);
+    removeElementAndUpdateLocalStorage(trashCan, trashCans);
   });
 }
 
-function createCard(localCardsString, localCards, optionNumber, amount) {
+function createCard(optionNumber, amount) {
   const card = createAndAppendElement('div', { classList: ['card'] }, cards);
   const cardInfo = createAndAppendElement('div', { classList: ['card-info'] }, card);
   const leftInfo = createAndAppendElement('div', { classList: ['left'] }, cardInfo);
 
   // Icon
   const optionSelected = optionNumber;
+  if (page == 'expense') {
+    iconOptions = ['fa-burger', 'fa-file-invoice-dollar', 'fa-house', 'fa-suitcase-medical', 'fa-bus', 'fa-film', 'fa-layer-group'];
+  } else {
+    iconOptions = ['fa-briefcase', 'fa-car-side', 'fa-arrow-rotate-left', 'fa-gift', 'fa-arrow-trend-up', 'fa-plus', 'fa-layer-group'];
+  }
+
   createAndAppendElement('i', { classList: ['icon', 'fa-solid', iconOptions[optionSelected - 1]] }, leftInfo);
 
   // cardType
@@ -97,7 +99,7 @@ function createCard(localCardsString, localCards, optionNumber, amount) {
   const cardAmountOptions = { classList: ['card-amount'], textContent: formatCurrency(amount) };
   createAndAppendElement('div', cardAmountOptions, cardInfo);
 
-  createDeleteButton(localCardsString, localCards, card);
+  createDeleteButton(card);
 }
 
 function formatCurrency(currency) {
@@ -105,7 +107,7 @@ function formatCurrency(currency) {
   return parseFloat(currency).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 }
 
-function updateTotal(localCards) {
+function updateTotal() {
   let totalAmount = 0;
 
   if (localCards.length > 0) {
@@ -122,64 +124,67 @@ function resetInput(array) {
   });
 }
 
-function updateLocalStorage(localCardsString, localCards) {
-  localStorage.setItem(localCardsString, JSON.stringify(localCards));
-  determineClassForClearAllButton(localCards, 'active', 'inactive');
+function updateLocalStorage() {
+  localStorage.setItem(key, JSON.stringify(localCards));
+  determineClassForClearAllButton();
 }
 
-function clearAllButton(localCardsString, localCards) {
+function clearAllButton() {
   clearAll.addEventListener('click', () => {
     if (clearAll.className == 'active') {
       cards.textContent = '';
       localCards = [];
-      updateLocalStorage(localCardsString, localCards);
-      updateTotal(localCards);
+      updateLocalStorage();
+      updateTotal();
     }
   });
 }
 
-function determineClassForClearAllButton(localCards, class1, class2) {
+function determineClassForClearAllButton() {
   if (localCards.length > 0) {
-    clearAll.className = class1;
+    clearAll.className = 'active';
     return;
   }
-  clearAll.className = class2;
+  clearAll.className = 'inactive';
 }
 
-function handleSubmit(localCardsString, localCards) {
+function handleSubmit() {
   cardForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const inputData = { optionNumber: typeSelect.value, amount: amountInput.value };
-    createCard(localCardsString, localCards, inputData.optionNumber, inputData.amount);
-    updateLocalStorage(localCardsString, localCards, () => localCards.push(inputData));
-    updateTotal(localCards);
-    clearAllButton(localCardsString, localCards);
+    createCard(inputData.optionNumber, inputData.amount);
+    localCards.push(inputData)
+    updateLocalStorage();
+    updateTotal();
+    clearAllButton();
     resetInput([typeSelect, amountInput]);
-    console.log(localCards.length);
-
     typeSelect.focus();
   });
 }
 
-function restoreData(localCardsString, localCards) {
-  console.log(test);
+function restoreData() {
   localCards.forEach((object) => {
-    createCard(localCardsString, localCards, object.optionNumber, object.amount);
+    createCard(object.optionNumber, object.amount);
   });
-  updateTotal(localCards);
+  updateTotal();
 }
 
-// function loadPage(localCardsString, localCards) {
-//   restoreData(localCardsString, localCards);
-//   handleSubmit(localCardsString, localCards);
-//   clearAllButton(localCardsString, localCards);
-//   determineClassForClearAllButton(localCards, 'active', 'inactive');
-// }
-
-//loadPage('local-expense-cards', localExpenseCards);
+function setElements() {
+  if(page == 'expense') {
+    title.textContent = 'YOUR EXPENSES';
+    subheading.textContent = 'Add Expense'
+    return
+  }
+  title.textContent = 'YOUR INCOME'
+  subheading.textContent = 'Add Income'
+}
 
 function onPageLoad() {
-  //Add
+  setElements()
+  restoreData()
+  handleSubmit()
+  clearAllButton()
+  determineClassForClearAllButton()
 }
 
-clearAllButton('local-expense-cards', localExpenseCards);
+onPageLoad()
