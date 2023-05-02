@@ -16,6 +16,17 @@ function setPage(pageKey) {
   localStorage.setItem('page', pageKey);
 }
 
+const page = localStorage.getItem('page');
+
+let key;
+  if (page == 'expense') {
+    key = 'local-expense-cards';
+  } else {
+    key = 'local-income-cards';
+}
+
+let localCards = localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : [];
+
 const cardForm = document.getElementById('card-form');
 const cards = document.getElementById('cards');
 const amountInput = document.getElementById('amount-input');
@@ -25,21 +36,51 @@ const title = document.getElementById('title');
 const subheading = document.getElementsByName('h3');
 const typeSelect = document.getElementById('type-select');
 const typeOptions = typeSelect.children;
+
 let iconOptions;
+let trashCans = [];
+let selectOptions;
 
-const page = localStorage.getItem('page');
-
-let key;
-
-if (page == 'expense') {
-  key = 'local-expense-cards';
-} else {
-  key = 'local-income-cards';
+function setTitleAndSubheading() {
+  if(page == 'expense') {
+    title.textContent = 'YOUR EXPENSES';
+    subheading.textContent = 'Add Expense'
+    return
+  }
+  title.textContent = 'YOUR INCOME'
+  subheading.textContent = 'Add Income'
 }
 
-let localCards = localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : [];
+function createSelectOptions() {
+  
+  if(page == 'expense') {
+    selectOptions = [ 'Food', 'Bills/Fees', 'Home Essentials', 'Medical', 'Transportation', 'Non-Essentials', 'Misc/Other' ];
+  } else {
+    selectOptions = [ 'Job', 'Side Gig', 'Refund', 'Gift', 'Interest', 'Bonus' ]
+  }
+  for(let x = 0; x < selectOptions.length; x++) {
+    createAndAppendElement('option', { value: x+1, textContent: selectOptions[x] }, typeSelect )
+  }
+}
 
-let trashCans = [];
+function clearAllButton() {
+  clearAll.addEventListener('click', () => {
+    if (clearAll.className == 'active') {
+      cards.textContent = '';
+      localCards = [];
+      updateLocalStorage();
+      updateTotal();
+    }
+  });
+}
+
+function determineClassForClearAllButton() {
+  if (localCards.length > 0) {
+    clearAll.className = 'active';
+    return;
+  }
+  clearAll.className = 'inactive';
+}
 
 function createAndAppendElement(elementType, options = {}, parent) {
   const element = document.createElement(elementType);
@@ -76,6 +117,11 @@ function createDeleteButton(parent) {
   });
 }
 
+function formatCurrency(currency) {
+  if (currency === undefined || currency === '') return '';
+  return parseFloat(currency).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+}
+
 function createCard(optionNumber, amount) {
   const card = createAndAppendElement('div', { classList: ['card'] }, cards);
   const cardInfo = createAndAppendElement('div', { classList: ['card-info'] }, card);
@@ -102,9 +148,26 @@ function createCard(optionNumber, amount) {
   createDeleteButton(card);
 }
 
-function formatCurrency(currency) {
-  if (currency === undefined || currency === '') return '';
-  return parseFloat(currency).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+function handleSubmit() {
+  cardForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const inputData = { optionNumber: typeSelect.value, amount: amountInput.value };
+    createCard(inputData.optionNumber, inputData.amount);
+    localCards.push(inputData)
+
+    updateLocalStorage();
+    updateTotal();
+    clearAllButton();
+    resetInput([typeSelect, amountInput]);
+
+    typeSelect.focus();
+  });
+}
+
+function updateLocalStorage() {
+  localStorage.setItem(key, JSON.stringify(localCards));
+  determineClassForClearAllButton();
 }
 
 function updateTotal() {
@@ -115,7 +178,8 @@ function updateTotal() {
       totalAmount += Number(localCards[x].amount);
     }
   }
-  return (total.textContent = formatCurrency(totalAmount));
+
+  total.textContent = formatCurrency(totalAmount);
 }
 
 function resetInput(array) {
@@ -124,67 +188,21 @@ function resetInput(array) {
   });
 }
 
-function updateLocalStorage() {
-  localStorage.setItem(key, JSON.stringify(localCards));
-  determineClassForClearAllButton();
-}
-
-function clearAllButton() {
-  clearAll.addEventListener('click', () => {
-    if (clearAll.className == 'active') {
-      cards.textContent = '';
-      localCards = [];
-      updateLocalStorage();
-      updateTotal();
-    }
-  });
-}
-
-function determineClassForClearAllButton() {
-  if (localCards.length > 0) {
-    clearAll.className = 'active';
-    return;
-  }
-  clearAll.className = 'inactive';
-}
-
-function handleSubmit() {
-  cardForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const inputData = { optionNumber: typeSelect.value, amount: amountInput.value };
-    createCard(inputData.optionNumber, inputData.amount);
-    localCards.push(inputData)
-    updateLocalStorage();
-    updateTotal();
-    clearAllButton();
-    resetInput([typeSelect, amountInput]);
-    typeSelect.focus();
-  });
-}
-
 function restoreData() {
   localCards.forEach((object) => {
     createCard(object.optionNumber, object.amount);
   });
+
   updateTotal();
 }
 
-function setElements() {
-  if(page == 'expense') {
-    title.textContent = 'YOUR EXPENSES';
-    subheading.textContent = 'Add Expense'
-    return
-  }
-  title.textContent = 'YOUR INCOME'
-  subheading.textContent = 'Add Income'
-}
-
 function onPageLoad() {
-  setElements()
-  restoreData()
-  handleSubmit()
+  setTitleAndSubheading()
+  createSelectOptions()
   clearAllButton()
   determineClassForClearAllButton()
+  restoreData()
+  handleSubmit()
 }
 
 onPageLoad()
