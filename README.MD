@@ -37,7 +37,9 @@ To run Saving Bucket properly, navigate to the Applications folder in your termi
 - Inspired by the need for a simple expense tracking tool.
 
 ## Contact Me
+If you have any questions, comments, or suggestions, please don't hesitate to reach out. I'd love to hear from you!
 
-- **Chaley Boatmon**
-- **Email:** chaleyboatmon@gmail.com
-- **Questions or Comments:** If you have any questions, comments, or suggestions, please feel free to reach out to me. I'd love to hear from you!
+**Chaley Boatmon**
+- Email: **<u>chaleyboatmon@gmail.com</u>**
+- GitHub: [<u>**chayboats**</u>](https://github.com/chayboats)
+Thank you for visiting my repository!
