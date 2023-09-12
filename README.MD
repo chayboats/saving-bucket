@@ -3,8 +3,6 @@
 Saving Bucket is a simple web application designed to help users track their expenses and income conveniently. It allows users to manage their financial transactions efficiently and calculates the balance between income and expenses.
 
 ## Features
-Saving Bucket offers the following features:
-
 - **Expense Tracking:** Users can input different types of expenses with associated amounts via a user-friendly form.
 
 - **Income Tracking:** Similar to expenses, users can track their income with ease.
