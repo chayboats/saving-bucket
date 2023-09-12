@@ -2,16 +2,6 @@
 
 Saving Bucket is a simple web application designed to help users track their expenses and income conveniently. It allows users to manage their financial transactions efficiently and calculates the balance between income and expenses.
 
-## Getting Started
-
-To run Saving Bucket properly, follow these steps:
-
-1. Open Google Chrome with specific settings:
-
-   ```bash
-   open -n -a Google\ Chrome.app --args --user-data-dir="users/yourUserName/Applications" --disable-web-security
-   ```
-
 ## Features
 Saving Bucket offers the following features:
 
@@ -28,7 +18,15 @@ Saving Bucket offers the following features:
 - **Balance Calculation:** The home page shows the balance between total income and total expenses.
 
 - **Local Storage:** User data is updated and saved in local storage, ensuring it's retained when returning to the website or refreshing.
+## Getting Started
 
+To run Saving Bucket properly, follow these steps:
+
+1. Open Google Chrome with specific settings:
+
+   ```bash
+   open -n -a Google\ Chrome.app --args --user-data-dir="users/yourUserName/Applications" --disable-web-security
+   ```
 
 ## Acknowledgments
 - Developed as a side project while learning to code with FreeCodeCamp.
