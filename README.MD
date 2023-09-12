@@ -26,7 +26,7 @@ To run Saving Bucket properly, navigate to the Applications folder in your termi
    ```bash
    open -n -a Google\ Chrome.app --args --user-data-dir="users/yourUserName/Applications" --disable-web-security
    ```
-2. Open the home.html file in the Google Chrome window that has opened
+2. Open the **home.html** file in the Google Chrome window that has opened
 ## Technologies Used
 - HTML
 - CSS
