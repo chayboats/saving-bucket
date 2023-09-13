@@ -3,17 +3,18 @@
 Saving Bucket is a simple web application designed to help users track their expenses and income conveniently. It allows users to manage their financial transactions efficiently and calculates the balance between income and expenses.
 
 ## Features
-- **Expense Tracking:** Users can input different types of expenses with associated amounts via a user-friendly form.
+**Expense Tracking** - Users can input different types of expenses with associated amounts via a user-friendly form.
+![Expenses](expenses.png)
 
-- **Income Tracking:** Similar to expenses, users can track their income with ease.
+**Income Tracking:** - Similar to expenses, users can track their income with ease.
+![Income](income.png)
 
 - **Expense and Income Lists:** All recorded expenses and income are displayed in a list format for easy reference.
 
-- **Delete and Clear Options:** Users can delete individual expenses or clear the entire list as needed.
+- **Delete and Clear Options:** Users can delete individual expenses/incomes or clear the entire list as needed.
 
-- **Expense Total:** The top of the expenses page displays the total cost of all recorded expenses.
-
-- **Balance Calculation:** The home page shows the balance between total income and total expenses.
+**Balance Calculation:** The home page shows the balance between total income and total expenses.
+![Home](home.png)
 
 - **Local Storage:** User data is updated and saved in local storage, ensuring it's retained when returning to the website or refreshing.
   
