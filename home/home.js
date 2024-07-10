@@ -19,7 +19,6 @@ const bucketTotal = document.getElementById('bucket-total');
 
 function setPage(pageKey) {
   localStorage.setItem('page', pageKey);
-  console.log(pageKey);
 }
 
 function formatCurrency(currency) {
